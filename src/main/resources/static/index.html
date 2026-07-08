@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👗 我的衣櫃 - Spring Boot 版</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary:#a68b5b;
+        --text:#3d3428;
+        --bg:#faf6ef;
+        --border:#e5d8c3;
+    }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#faf6ef,#f3ead8);color:var(--text);font-family:'Noto Sans TC',sans-serif;min-height:100vh}
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-bottom:2px solid var(--border);padding:1rem;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 20px rgba(166,139,91,0.15)}
+.logo{font-size:1.3rem;font-weight:700;color:var(--primary)}
+.status{font-size:0.7rem;color:#888;margin-top:2px}
+.status.connected{color:#6bcf7f}
+.nav{display:flex;gap:0.5rem}
+.btn{padding:8px 16px;border:none;border-radius:10px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;transition:all 0.3s;font-size:0.8rem}
+.btn-primary{background:linear-gradient(135deg,var(--primary),#d2b48c);color:white;box-shadow:0 4px 15px rgba(181,155,114,0.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(181,155,114,0.4)}
+.btn-secondary{background:#faf6ef;color:var(--primary);border:2px solid var(--border)}
+.main{padding-top:80px;min-height:100vh;padding-bottom:2rem}
+.container{max-width:1200px;margin:0 auto;padding:1.5rem}
+.header-title{font-size:1.8rem;font-weight:700;color:var(--primary);margin-bottom:1rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat{background:white;border:2px solid var(--border);border-radius:12px;padding:1rem;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+.stat-num{font-size:1.8rem;font-weight:700;color:var(--primary)}
+.stat-label{font-size:0.75rem;color:#888;margin-top:4px}
+.filter{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.filter-btn{padding:6px 12px;border:2px solid var(--border);background:white;border-radius:16px;cursor:pointer;font-size:0.75rem;font-weight:600;transition:all 0.2s}
+.filter-btn.active{background:var(--primary);color:white;border-color:var(--primary)}
+.search{width:100%;padding:10px 16px;border:2px solid var(--border);border-radius:10px;font-family:'Noto Sans TC',sans-serif;margin-bottom:1rem;font-size:0.9rem}
+.search:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(166,139,91,0.15)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem}
+.card{background:white;border:2px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all 0.3s;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+.card:hover{border-color:var(--primary);transform:translateY(-4px);box-shadow:0 8px 25px rgba(166,139,91,0.25)}
+.card-img{width:100%;aspect-ratio:3/4;background:linear-gradient(135deg,#faf6ef,#efe2cc);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;top:8px;left:8px;background:rgba(255,255,255,0.95);color:var(--primary);padding:3px 8px;border-radius:10px;font-size:0.65rem;font-weight:700}
+.card-body{padding:0.75rem}
+.card-name{font-size:0.8rem;font-weight:600;margin-bottom:2px}
+.card-meta{font-size:0.7rem;color:#888;line-height:1.3}
+.modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.4);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:1rem}
+.modal.open{display:flex}
+.modal-box{background:white;border-radius:20px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15);animation:modalIn 0.3s}
+@keyframes modalIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.modal-header{padding:1.5rem;border-bottom:2px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.modal-title{font-size:1.3rem;font-weight:700;color:var(--primary)}
+.modal-close{width:32px;height:32px;border:2px solid var(--border);background:#faf6ef;border-radius:8px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.modal-close:hover{border-color:var(--primary);color:var(--primary)}
+.modal-body{padding:1.5rem}
+.modal-footer{padding:1rem 1.5rem;border-top:2px solid var(--border);display:flex;gap:0.8rem;justify-content:flex-end}
+.form-group{margin-bottom:1rem}
+.form-label{display:block;font-size:0.75rem;color:var(--primary);font-weight:700;letter-spacing:0.1em;margin-bottom:6px;text-transform:uppercase}
+.form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;background:#faf6ef;border:2px solid var(--border);border-radius:8px;font-family:'Noto Sans TC',sans-serif;font-size:0.85rem;color:var(--text);outline:none;transition:all 0.3s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(166,139,91,0.15)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+.upload-area{border:3px dashed var(--border);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;background:linear-gradient(135deg,#faf6ef,#efe2cc);transition:all 0.3s;position:relative}
+.upload-area:hover,.upload-area.drag{border-color:var(--primary);background:linear-gradient(135deg,rgba(166,139,91,0.12),rgba(166,139,91,0.05))}
+.upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-icon{font-size:2rem;margin-bottom:0.5rem;display:block}
+.upload-text{font-size:0.85rem;color:var(--text);font-weight:500}
+.upload-sub{font-size:0.7rem;color:#888;margin-top:0.3rem}
+.upload-preview{width:100%;max-height:180px;object-fit:contain;border-radius:8px;margin-top:0.5rem}
+.loading{text-align:center;padding:2rem;color:#888}
+.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:30px;height:30px;animation:spin 0.8s linear infinite;margin:0 auto}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:linear-gradient(135deg,var(--primary),#d2b48c);color:white;padding:0.9rem 1.2rem;border-radius:10px;font-size:0.8rem;z-index:999;transition:transform 0.3s;pointer-events:none;box-shadow:0 8px 20px rgba(181,155,114,0.3);font-weight:600}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.empty{text-align:center;padding:3rem 1rem;color:#888}
+.empty-icon{font-size:2.5rem;margin-bottom:0.5rem}
+.color-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:0.5rem}
+.color-swatch{width:24px;height:24px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all 0.2s}
+.color-swatch.selected{border-color:var(--primary);transform:scale(1.15)}
+.error{color:#d2b48c;font-size:0.75rem;margin-top:4px}
+@media(max-width:600px){.grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="logo">👗 我的衣櫃</div>
+    <div class="status" id="status">連接中...</div>
+  </div>
+  <div class="nav">
+    <button class="btn btn-secondary btn-sm" onclick="openBackup()" style="padding:6px 12px">💾</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="container">
+    <div class="header-title">我的衣物</div>
+    
+    <div class="stats" id="stats"></div>
+
+    <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1rem">
+      <button class="btn btn-primary" onclick="openBatch()">📦 批次匯入</button>
+      <button class="btn btn-primary" onclick="openAdd()">➕ 新增衣物</button>
+    </div>
+
+    <input class="search" id="search" placeholder="🔍 搜尋衣物..." oninput="debounceSearch()">
+
+    <div class="filter" id="filters"></div>
+
+    <div id="loading" style="display:none" class="loading"><div class="spinner"></div><p>載入中...</p></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- MODAL: 新增衣物 -->
+<div class="modal" id="modal-add">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="add-title">新增衣物</div>
+      <button class="modal-close" onclick="closeModal('modal-add')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="add-error" style="display:none;background:#f5ead8;border:2px solid #e84a7c;border-radius:8px;padding:0.8rem;color:#e84a7c;font-size:0.85rem;margin-bottom:1rem"></div>
+      
+      <div class="form-group">
+        <label class="form-label">📷 照片</label>
+        <div class="upload-area" ondragover="drag(event)" ondrop="drop(event)" ondragleave="nodrag(event)">
+          <input type="file" accept="image/*" onchange="uploadImg(event)">
+          <span class="upload-icon">🖼️</span>
+          <div class="upload-text">點擊或拖曳上傳</div>
+          <div class="upload-sub">JPG、PNG 等格式</div>
+          <img id="preview" class="upload-preview" style="display:none">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">名稱</label>
+          <input class="form-input" id="name" placeholder="例：白色T-shirt">
+          <div id="name-error" class="error"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">品牌</label>
+          <input class="form-input" id="brand" placeholder="例：Uniqlo">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">類別</label>
+          <select class="form-select" id="category">
+            <option value="">選擇類別</option>
+            <option>上衣</option><option>褲子</option><option>裙子</option><option>外套</option>
+            <option>洋裝</option><option>鞋子</option><option>包包</option><option>配件</option>
+            <option>內搭</option><option>運動</option><option>其他</option>
+          </select>
+          <div id="category-error" class="error"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">季節</label>
+          <select class="form-select" id="season">
+            <option value="">選擇季節</option>
+            <option>四季</option><option>春夏</option><option>秋冬</option><option>夏</option><option>冬</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">顏色</label>
+        <div class="color-row" id="colors">
+          <div class="color-swatch selected" style="background:#fff" data-c="白色" onclick="pickColor(this)"></div>
+          <div class="color-swatch" style="background:#222" data-c="黑色" onclick="pickColor(this)"></div>
+          <div class="color-swatch" style="background:#8b7355" data-c="棕色" onclick="pickColor(this)"></div>
+          <div class="color-swatch" style="background:#ff6b9d" data-c="粉紅" onclick="pickColor(this)"></div>
+          <div class="color-swatch" style="background:#ffa500" data-c="橘色" onclick="pickColor(this)"></div>
+          <div class="color-swatch" style="background:#ffd700" data-c="黃色" onclick="pickColor(this)"></div>
+          <div class="color-swatch" style="background:#6bcf7f" data-c="綠色" onclick="pickColor(this)"></div>
+          <div class="color-swatch" style="background:#4ecdc4" data-c="青綠" onclick="pickColor(this)"></div>
+          <div class="color-swatch" style="background:#87ceeb" data-c="藍色" onclick="pickColor(this)"></div>
+          <div class="color-swatch" style="background:#a29bfe" data-c="紫色" onclick="pickColor(this)"></div>
+        </div>
+        <input class="form-input" id="color" style="margin-top:0.6rem" placeholder="或輸入顏色" value="白色">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">風格</label>
+          <input class="form-input" id="style" placeholder="休閒、正式...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">價格</label>
+          <input class="form-input" id="price" type="number" placeholder="NT$">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">備註</label>
+        <textarea class="form-textarea" id="note" placeholder="材質、保養..." style="resize:vertical;min-height:80px"></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-add')">取消</button>
+      <button class="btn btn-primary" id="save-btn" onclick="save()">💾 儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: 衣物詳情 -->
+<div class="modal" id="modal-detail">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="detail-title">衣物詳情</div>
+      <button class="modal-close" onclick="closeModal('modal-detail')">✕</button>
+    </div>
+    <div id="detail-loading" style="display:none;text-align:center;padding:2rem"><div class="spinner"></div></div>
+    <div class="modal-body" id="detail-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" id="del-btn">🗑 刪除</button>
+      <button class="btn btn-secondary btn-sm" id="edit-btn">✏️ 編輯</button>
+      <button class="btn btn-primary btn-sm" onclick="closeModal('modal-detail')">關閉</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: 備份 -->
+<div class="modal" id="modal-backup">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">💾 備份與復原</div>
+      <button class="modal-close" onclick="closeModal('modal-backup')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="text-align:center;margin-bottom:1.5rem">
+        <div style="font-size:2rem;margin-bottom:0.5rem">💾</div>
+        <p style="color:#888;font-size:0.9rem">備份資料到伺服器或本地</p>
+      </div>
+      
+      <div id="backup-error" style="display:none;background:#ffe0e0;border:2px solid #a68b5b;border-radius:8px;padding:0.8rem;color:#8b6f47;font-size:0.85rem;margin-bottom:1rem"></div>
+      
+      <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border);margin-bottom:1rem">
+        <h3 style="font-weight:700;color:var(--primary);margin-bottom:0.4rem">📥 匯出本地備份</h3>
+        <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem">下載 JSON 檔案到你的設備</p>
+        <button class="btn btn-primary" style="width:100%;margin-bottom:0.5rem" onclick="exportLocal()">📥 下載到設備</button>
+      </div>
+
+      <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border);margin-bottom:1rem">
+        <h3 style="font-weight:700;color:var(--primary);margin-bottom:0.4rem">💾 備份到伺服器</h3>
+        <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem">將資料存儲到 Spring Boot 伺服器</p>
+        <button class="btn btn-primary" style="width:100%;margin-bottom:0.5rem" id="export-btn" onclick="exportServer()">💾 備份到伺服器</button>
+      </div>
+
+      <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border);margin-bottom:1rem">
+        <h3 style="font-weight:700;color:var(--primary);margin-bottom:0.4rem">📤 從伺服器復原</h3>
+        <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem">從伺服器恢復備份資料</p>
+        <button class="btn btn-primary" style="width:100%" id="import-server-btn" onclick="importServer()">📤 從伺服器復原</button>
+      </div>
+
+      <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border)">
+        <h3 style="font-weight:700;color:var(--primary);margin-bottom:0.4rem">📤 從設備上傳備份</h3>
+        <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem">上傳之前下載的 JSON 檔案</p>
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importLocal(event)">
+        <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('import-file').click()">📤 從設備上傳</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-backup')">關閉</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== 配置 =====
+const API_URL = '/api';
+const SEARCH_DELAY = 500;
+
+let clothes = [], filter = '全部', searchTimeout;
+let editId = null, imgData = null;
+
+// ===== API 呼叫 =====
+async function apiCall(endpoint, method = 'GET', body = null) {
+  try {
+    const options = {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+    };
+    if (body) options.body = JSON.stringify(body);
+
+    const response = await fetch(`${API_URL}${endpoint}`, options);
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || '請求失敗');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+}
+
+// ===== 連接狀態 =====
+async function checkConnection() {
+  try {
+    await apiCall('/clothes/health');
+    document.getElementById('status').textContent = '✅ 已連接';
+    document.getElementById('status').classList.add('connected');
+  } catch (e) {
+    document.getElementById('status').textContent = '❌ 未連接';
+    document.getElementById('status').classList.remove('connected');
+  }
+}
+
+// ===== UI 工具 =====
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function showLoading(show = true) {
+  document.getElementById('loading').style.display = show ? 'block' : 'none';
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
+});
+
+// ===== 衣物操作 =====
+async function loadClothes() {
+  showLoading(true);
+  try {
+    clothes = await apiCall('/clothes');
+    render();
+  } catch (e) {
+    toast('❌ 載入失敗: ' + e.message);
+  } finally {
+    showLoading(false);
+  }
+}
+
+function render() {
+  const search = (document.getElementById('search')?.value || '').toLowerCase();
+  const filtered = clothes.filter(c => {
+    const cat = filter === '全部' || c.category === filter;
+    const sea = !search || c.name.toLowerCase().includes(search) || 
+                (c.brand || '').toLowerCase().includes(search) ||
+                (c.color || '').toLowerCase().includes(search);
+    return cat && sea;
+  });
+  
+  updateStats();
+  updateFilters();
+  
+  const grid = document.getElementById('grid');
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">
+      <div class="empty-icon">${clothes.length === 0 ? '👗' : '🔍'}</div>
+      <p>${clothes.length === 0 ? '還沒有衣物' : '沒有符合條件'}</p>
+    </div>`;
+    return;
+  }
+  
+  grid.innerHTML = filtered.map(c => `
+    <div class="card" onclick="showDetail('${c.id}')">
+      <div class="card-img">
+        ${c.image ? `<img src="${c.image}" alt="${c.name}">` : 
+          `<span style="font-size:2rem;opacity:0.3">${catIcon(c.category)}</span>`}
+        <span class="badge">${c.category}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">${c.name}</div>
+        <div class="card-meta">${c.brand || ''}${c.brand && c.color ? '·' : ''}${c.color || ''}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateStats() {
+  const c = {};
+  clothes.forEach(i => { c[i.category] = (c[i.category] || 0) + 1; });
+  const t = Object.entries(c).sort((a,b) => b[1] - a[1])[0];
+  
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><div class="stat-num">${clothes.length}</div><div class="stat-label">件衣物</div></div>
+    <div class="stat"><div class="stat-num">${Object.keys(c).length}</div><div class="stat-label">種類</div></div>
+    ${t ? `<div class="stat"><div class="stat-num">${t[1]}</div><div class="stat-label">${t[0]}</div></div>` : ''}
+  `;
+}
+
+function updateFilters() {
+  const cats = ['全部', ...new Set(clothes.map(c => c.category))];
+  document.getElementById('filters').innerHTML = cats.map(c => 
+    `<button class="filter-btn ${c === filter ? 'active' : ''}" onclick="filter='${c}';render()">${c}</button>`
+  ).join('');
+}
+
+function catIcon(c) {
+  return {'上衣':'👕','褲子':'👖','裙子':'👗','外套':'🧥','洋裝':'👗','鞋子':'👟',
+          '包包':'👜','配件':'💍','內搭':'🩱','運動':'⚽','其他':'👔'}[c] || '👔';
+}
+
+function debounceSearch() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => render(), SEARCH_DELAY);
+}
+
+// ===== 新增/編輯衣物 =====
+function openAdd() {
+  editId = null;
+  imgData = null;
+  document.getElementById('add-title').textContent = '新增衣物';
+  document.getElementById('add-error').style.display = 'none';
+  ['name','brand','style','note','price','color','season'].forEach(i => 
+    document.getElementById(i).value = i === 'color' ? '白色' : (i === 'season' ? '' : '')
+  );
+  document.getElementById('category').value = '';
+  document.getElementById('preview').style.display = 'none';
+  document.querySelectorAll('.color-swatch').forEach((s, i) => s.classList.toggle('selected', i === 0));
+  openModal('modal-add');
+}
+
+function drag(e) { e.preventDefault(); e.currentTarget.classList.add('drag'); }
+function nodrag(e) { e.currentTarget.classList.remove('drag'); }
+function drop(e) { e.preventDefault(); e.currentTarget.classList.remove('drag'); const f = e.dataTransfer.files[0]; if (f && f.type.startsWith('image/')) readImg(f); }
+function uploadImg(e) { const f = e.target.files[0]; if (f) readImg(f); }
+
+function readImg(f) {
+  const r = new FileReader();
+  r.onload = e => {
+    compressImg(e.target.result).then(d => {
+      imgData = d;
+      document.getElementById('preview').src = d;
+      document.getElementById('preview').style.display = 'block';
+    });
+  };
+  r.readAsDataURL(f);
+}
+
+function compressImg(url, q = 0.65, w = 1024, h = 1280) {
+  return new Promise(res => {
+    const i = new Image();
+    i.onload = () => {
+      const c = document.createElement('canvas');
+      let tw = i.width, th = i.height;
+      if (tw > th) {
+        if (tw > w) { th = Math.round(th * (w / tw)); tw = w; }
+      } else {
+        if (th > h) { tw = Math.round(tw * (h / th)); th = h; }
+      }
+      c.width = tw;
+      c.height = th;
+      c.getContext('2d').drawImage(i, 0, 0, tw, th);
+      res(c.toDataURL('image/jpeg', q));
+    };
+    i.src = url;
+  });
+}
+
+function pickColor(el) {
+  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('color').value = el.dataset.c;
+}
+
+async function save() {
+  const name = document.getElementById('name').value.trim();
+  const category = document.getElementById('category').value;
+  
+  // 驗證
+  let errors = {};
+  if (!name) errors.name = '衣物名稱不能為空';
+  if (!category) errors.category = '類別不能為空';
+  
+  if (Object.keys(errors).length > 0) {
+    Object.entries(errors).forEach(([k, v]) => {
+      const el = document.getElementById(k + '-error');
+      if (el) { el.textContent = v; el.style.display = 'block'; }
+    });
+    return;
+  }
+  
+  document.querySelectorAll('.error').forEach(e => e.style.display = 'none');
+  
+  const item = {
+    name,
+    brand: document.getElementById('brand').value.trim(),
+    category,
+    season: document.getElementById('season').value,
+    color: document.getElementById('color').value.trim(),
+    style: document.getElementById('style').value.trim(),
+    price: document.getElementById('price').value,
+    image: imgData,
+    note: document.getElementById('note').value.trim()
+  };
+  
+  document.getElementById('save-btn').disabled = true;
+  document.getElementById('save-btn').textContent = '儲存中...';
+  
+  try {
+    if (editId) {
+      await apiCall(`/clothes/${editId}`, 'PUT', item);
+      toast('✏️ 衣物已更新');
+    } else {
+      await apiCall('/clothes', 'POST', item);
+      toast('✅ 衣物已新增');
+    }
+    closeModal('modal-add');
+    await loadClothes();
+  } catch (e) {
+    document.getElementById('add-error').textContent = '❌ ' + e.message;
+    document.getElementById('add-error').style.display = 'block';
+  } finally {
+    document.getElementById('save-btn').disabled = false;
+    document.getElementById('save-btn').textContent = '💾 儲存';
+  }
+}
+
+async function showDetail(id) {
+  document.getElementById('detail-loading').style.display = 'block';
+  document.getElementById('detail-body').innerHTML = '';
+  openModal('modal-detail');
+  
+  try {
+    const c = await apiCall(`/clothes/${id}`);
+    document.getElementById('detail-title').textContent = c.name;
+    document.getElementById('detail-loading').style.display = 'none';
+    
+    document.getElementById('detail-body').innerHTML = `
+      ${c.image ? `<img src="${c.image}" style="width:100%;max-height:220px;object-fit:contain;border-radius:10px;margin-bottom:1rem;background:#faf6ef;border:2px solid var(--border)">` : ''}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+        <div style="background:#faf6ef;border-radius:8px;padding:0.8rem;border:2px solid var(--border)">
+          <div style="font-size:0.7rem;color:var(--primary);font-weight:700;margin-bottom:4px">類別</div>
+          <div style="font-size:0.9rem">${c.category}</div>
+        </div>
+        <div style="background:#faf6ef;border-radius:8px;padding:0.8rem;border:2px solid var(--border)">
+          <div style="font-size:0.7rem;color:var(--primary);font-weight:700;margin-bottom:4px">季節</div>
+          <div style="font-size:0.9rem">${c.season || '-'}</div>
+        </div>
+        <div style="background:#faf6ef;border-radius:8px;padding:0.8rem;border:2px solid var(--border)">
+          <div style="font-size:0.7rem;color:var(--primary);font-weight:700;margin-bottom:4px">顏色</div>
+          <div style="font-size:0.9rem">${c.color || '-'}</div>
+        </div>
+        <div style="background:#faf6ef;border-radius:8px;padding:0.8rem;border:2px solid var(--border)">
+          <div style="font-size:0.7rem;color:var(--primary);font-weight:700;margin-bottom:4px">品牌</div>
+          <div style="font-size:0.9rem">${c.brand || '-'}</div>
+        </div>
+        <div style="background:#faf6ef;border-radius:8px;padding:0.8rem;border:2px solid var(--border)">
+          <div style="font-size:0.7rem;color:var(--primary);font-weight:700;margin-bottom:4px">風格</div>
+          <div style="font-size:0.9rem">${c.style || '-'}</div>
+        </div>
+        <div style="background:#faf6ef;border-radius:8px;padding:0.8rem;border:2px solid var(--border)">
+          <div style="font-size:0.7rem;color:var(--primary);font-weight:700;margin-bottom:4px">價格</div>
+          <div style="font-size:0.9rem">${c.price ? 'NT$' + c.price : '-'}</div>
+        </div>
+      </div>
+      ${c.note ? `<div style="margin-top:1rem;padding:0.8rem;background:#faf6ef;border-radius:8px;border:2px solid var(--border);font-size:0.85rem;line-height:1.6">${c.note}</div>` : ''}
+      <div style="margin-top:0.8rem;font-size:0.7rem;color:#888">新增於 ${new Date(c.createdAt).toLocaleDateString('zh-TW')}</div>
+    `;
+    
+    document.getElementById('del-btn').onclick = async () => {
+      if (confirm('確定要刪除嗎？')) {
+        try {
+          await apiCall(`/clothes/${id}`, 'DELETE');
+          toast('🗑 已刪除');
+          closeModal('modal-detail');
+          await loadClothes();
+        } catch (e) {
+          toast('❌ ' + e.message);
+        }
+      }
+    };
+    
+    document.getElementById('edit-btn').onclick = async () => {
+      editId = id;
+      imgData = c.image;
+      document.getElementById('add-title').textContent = '編輯衣物';
+      document.getElementById('name').value = c.name;
+      document.getElementById('brand').value = c.brand || '';
+      document.getElementById('category').value = c.category;
+      document.getElementById('season').value = c.season || '';
+      document.getElementById('color').value = c.color || '';
+      document.getElementById('style').value = c.style || '';
+      document.getElementById('price').value = c.price || '';
+      document.getElementById('note').value = c.note || '';
+      if (c.image) {
+        document.getElementById('preview').src = c.image;
+        document.getElementById('preview').style.display = 'block';
+      } else {
+        document.getElementById('preview').style.display = 'none';
+      }
+      closeModal('modal-detail');
+      openModal('modal-add');
+    };
+  } catch (e) {
+    document.getElementById('detail-loading').style.display = 'none';
+    document.getElementById('detail-body').innerHTML = `<div style="color:#e84a7c">❌ ${e.message}</div>`;
+  }
+}
+
+// ===== 備份 =====
+function openBackup() { openModal('modal-backup'); }
+
+async function exportServer() {
+  document.getElementById('export-btn').disabled = true;
+  document.getElementById('export-btn').textContent = '備份中...';
+  document.getElementById('backup-error').style.display = 'none';
+  
+  try {
+    const backup = await apiCall('/clothes/backup/export');
+    toast('✅ 備份成功');
+    document.getElementById('export-btn').textContent = '💾 備份到伺服器';
+  } catch (e) {
+    document.getElementById('backup-error').textContent = '❌ ' + e.message;
+    document.getElementById('backup-error').style.display = 'block';
+  } finally {
+    document.getElementById('export-btn').disabled = false;
+  }
+}
+
+async function importServer() {
+  document.getElementById('import-server-btn').disabled = true;
+  document.getElementById('import-server-btn').textContent = '復原中...';
+  document.getElementById('backup-error').style.display = 'none';
+  
+  try {
+    const backup = await apiCall('/clothes/backup/export');
+    await apiCall('/clothes/backup/import', 'POST', backup);
+    toast('✅ 復原成功');
+    await loadClothes();
+    closeModal('modal-backup');
+  } catch (e) {
+    document.getElementById('backup-error').textContent = '❌ ' + e.message;
+    document.getElementById('backup-error').style.display = 'block';
+  } finally {
+    document.getElementById('import-server-btn').disabled = false;
+    document.getElementById('import-server-btn').textContent = '📤 從伺服器復原';
+  }
+}
+
+function exportLocal() {
+  const data = { clothes };
+  const s = JSON.stringify(data, null, 2);
+  const b = new Blob([s], { type: 'application/json' });
+  const u = URL.createObjectURL(b);
+  const a = document.createElement('a');
+  a.href = u;
+  a.download = `wardrobe-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(u);
+  toast('💾 已下載到設備');
+}
+
+function importLocal(e) {
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = async ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data.clothes) throw new Error('格式錯誤');
+      
+      await apiCall('/clothes/batch-import', 'POST', data.clothes);
+      toast('✅ 已導入');
+      await loadClothes();
+      closeModal('modal-backup');
+    } catch (err) {
+      document.getElementById('backup-error').textContent = '❌ ' + err.message;
+      document.getElementById('backup-error').style.display = 'block';
+    }
+  };
+  r.readAsText(f);
+  e.target.value = '';
+}
+
+// ===== 初始化 =====
+window.addEventListener('load', async () => {
+  await checkConnection();
+  setInterval(checkConnection, 30000); // 每 30 秒檢查一次連接
+  await loadClothes();
+});
+</script>
+
+</body>
+</html>
