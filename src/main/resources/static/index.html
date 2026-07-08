@@ -208,6 +208,75 @@ body{background:linear-gradient(135deg,#faf6ef,#f3ead8);color:var(--text);font-f
   </div>
 </div>
 
+<!-- MODAL: 批次匯入 -->
+<div class="modal" id="modal-batch">
+    <div class="modal-box" style="max-width:680px">
+        <div class="modal-header">
+            <div class="modal-title">📦 批次匯入衣物</div>
+            <button class="modal-close" onclick="closeBatch()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div id="batch-error" style="display:none;background:#faf6ef;border:2px solid #a68b5b;border-radius:8px;padding:0.8rem;color:#8b6f47;font-size:0.85rem;margin-bottom:1rem"></div>
+
+            <!-- 步驟1: 上傳照片 -->
+            <div id="batch-step-upload">
+                <div class="upload-area" ondragover="drag(event)" ondrop="dropBatch(event)" ondragleave="nodrag(event)">
+                    <input type="file" multiple accept="image/*" onchange="uploadBatch(event)">
+                    <span class="upload-icon">🖼️</span>
+                    <div class="upload-text">點擊或拖曳上傳多張照片</div>
+                    <div class="upload-sub">一次可上傳 10-50 張</div>
+                </div>
+                <div style="margin-top:1rem;display:flex;gap:0.8rem;justify-content:space-between">
+                    <button class="btn btn-secondary" onclick="closeBatch()">取消</button>
+                    <button class="btn btn-primary" id="batch-next" style="display:none" onclick="batchEdit()">下一步 ➜</button>
+                </div>
+            </div>
+
+            <!-- 步驟2: 編輯詳情 -->
+            <div id="batch-step-edit" style="display:none">
+                <!-- 快速填充 -->
+                <div style="background:linear-gradient(135deg,rgba(255,107,157,0.08),rgba(255,165,0,0.08));border:2px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem;display:flex;gap:0.8rem;align-items:center;flex-wrap:wrap">
+                    <label style="font-size:0.75rem;color:var(--primary);font-weight:700;white-space:nowrap">⚡ 快速填充全部：</label>
+                    <select id="b-category" style="background:white;border:2px solid var(--border);border-radius:6px;color:var(--text);padding:6px 10px;font-size:0.75rem;outline:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif">
+                        <option value="">類別</option>
+                        <option>上衣</option><option>褲子</option><option>裙子</option><option>外套</option>
+                        <option>洋裝</option><option>鞋子</option><option>包包</option><option>配件</option>
+                        <option>內搭</option><option>運動</option><option>其他</option>
+                    </select>
+                    <select id="b-brand" style="background:white;border:2px solid var(--border);border-radius:6px;color:var(--text);padding:6px 10px;font-size:0.75rem;outline:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif">
+                        <option value="">品牌</option>
+                        <option>Uniqlo</option><option>ZARA</option><option>H&M</option><option>Forever21</option>
+                        <option>無印良品</option><option>GU</option><option>Shein</option><option>其他</option>
+                    </select>
+                    <select id="b-season" style="background:white;border:2px solid var(--border);border-radius:6px;color:var(--text);padding:6px 10px;font-size:0.75rem;outline:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif">
+                        <option value="">季節</option>
+                        <option>四季</option><option>春夏</option><option>秋冬</option><option>夏</option><option>冬</option>
+                    </select>
+                    <button class="btn btn-primary" style="padding:6px 14px;font-size:0.75rem;white-space:nowrap" onclick="batchApply()">✨ 套用</button>
+                </div>
+
+                <!-- 圖片預覽網格 -->
+                <div id="batch-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:0.6rem;max-height:55vh;overflow-y:auto;padding-right:4px;margin-bottom:1rem"></div>
+
+                <!-- 進度條 -->
+                <div style="height:5px;background:var(--border);border-radius:2.5px;margin-bottom:0.5rem;overflow:hidden">
+                    <div id="batch-bar" style="height:100%;background:linear-gradient(90deg,var(--primary),#d2b48c);border-radius:2.5px;transition:width 0.3s;width:0%"></div>
+                </div>
+                <div id="batch-counter" style="font-size:0.75rem;color:#888;text-align:right;margin-bottom:1rem;font-weight:600">已填 0 / 0</div>
+
+                <!-- 編輯面板 -->
+                <div id="batch-edit-panel" style="display:none"></div>
+
+                <!-- 按鈕 -->
+                <div style="display:flex;gap:0.8rem;justify-content:space-between">
+                    <button class="btn btn-secondary" onclick="batchReset()">← 重新選擇</button>
+                    <button class="btn btn-primary" id="batch-save" onclick="batchSave()">✅ 儲存全部</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- MODAL: 衣物詳情 -->
 <div class="modal" id="modal-detail">
   <div class="modal-box">
@@ -238,7 +307,7 @@ body{background:linear-gradient(135deg,#faf6ef,#f3ead8);color:var(--text);font-f
         <p style="color:#888;font-size:0.9rem">備份資料到伺服器或本地</p>
       </div>
       
-      <div id="backup-error" style="display:none;background:#ffe0e0;border:2px solid #a68b5b;border-radius:8px;padding:0.8rem;color:#8b6f47;font-size:0.85rem;margin-bottom:1rem"></div>
+      <div id="backup-error" style="display:none;background:#faf6ef;border:2px solid #a68b5b;border-radius:8px;padding:0.8rem;color:#8b6f47;font-size:0.85rem;margin-bottom:1rem"></div>
       
       <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border);margin-bottom:1rem">
         <h3 style="font-weight:700;color:var(--primary);margin-bottom:0.4rem">📥 匯出本地備份</h3>
@@ -603,6 +672,302 @@ async function showDetail(id) {
     document.getElementById('detail-body').innerHTML = `<div style="color:#e84a7c">❌ ${e.message}</div>`;
   }
 }
+
+// ===== 批次匯入 =====
+let batchItems = [];
+let editingBatchIdx = -1;
+
+function openBatch() {
+    batchItems = [];
+    editingBatchIdx = -1;
+    document.getElementById('batch-step-upload').style.display = 'block';
+    document.getElementById('batch-step-edit').style.display = 'none';
+    document.getElementById('batch-grid').innerHTML = '';
+    document.getElementById('batch-error').style.display = 'none';
+    openModal('modal-batch');
+}
+
+function closeBatch() {
+    batchItems = [];
+    editingBatchIdx = -1;
+    closeModal('modal-batch');
+}
+
+function batchReset() {
+    batchItems = [];
+    editingBatchIdx = -1;
+    document.getElementById('batch-step-upload').style.display = 'block';
+    document.getElementById('batch-step-edit').style.display = 'none';
+    document.getElementById('batch-grid').innerHTML = '';
+    document.getElementById('batch-error').style.display = 'none';
+}
+
+function dropBatch(e) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag');
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    if (files.length) procBatch(files);
+}
+
+function uploadBatch(e) {
+    procBatch(Array.from(e.target.files));
+}
+
+async function procBatch(files) {
+    document.getElementById('batch-next').style.display = 'none';
+    const total = files.length;
+    let done = 0;
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+
+        reader.onload = async (e) => {
+            const compressed = await compressImg(e.target.result, 0.65, 1024, 1280);
+            batchItems.push({
+                id: Date.now() + i,
+                image: compressed,
+                name: file.name.replace(/\.[^/.]+$/, ''),
+                brand: '',
+                category: '',
+                season: '',
+                color: '',
+                style: '',
+                price: '',
+                note: ''
+            });
+
+            done++;
+            document.getElementById('batch-next').style.display = 'inline-flex';
+            document.getElementById('batch-next').textContent = `完成 ${done}/${total}`;
+
+            if (done === total) {
+                setTimeout(() => {
+                    document.getElementById('batch-next').textContent = '下一步 ➜';
+                }, 300);
+            }
+        };
+
+        reader.readAsDataURL(file);
+    }
+}
+
+function batchEdit() {
+    if (!batchItems.length) {
+        alert('請選擇至少一張照片');
+        return;
+    }
+    document.getElementById('batch-step-upload').style.display = 'none';
+    document.getElementById('batch-step-edit').style.display = 'block';
+    setTimeout(() => batchRender(), 100);
+}
+
+function batchRender() {
+    const grid = document.getElementById('batch-grid');
+    grid.innerHTML = '';
+
+    batchItems.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.id = `bi-${idx}`;
+        div.className = 'batch-item';
+        div.style.cssText = 'background:white;border:2px solid var(--border);border-radius:12px;overflow:hidden;position:relative;cursor:pointer;transition:all 0.2s';
+
+        div.innerHTML = `
+      <img src="${item.image}" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block">
+      <button class="batch-item-btn" style="position:absolute;top:4px;left:4px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.95);border:none;cursor:pointer;font-size:0.65rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(255,107,157,0.2);color:var(--primary)" onclick="event.stopPropagation();batchEdit2(${idx})">✏️</button>
+      <button class="batch-item-btn" style="position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.95);border:none;cursor:pointer;font-size:0.65rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(255,107,157,0.2);color:#e84a7c" onclick="event.stopPropagation();batchDel(${idx})">✕</button>
+      <div style="padding:0.4rem 0.5rem">
+        <div style="font-size:0.65rem;color:var(--text);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.name}</div>
+        <div style="font-size:0.6rem;color:#888;margin-top:2px">${item.category || '未選'}${item.brand ? '·' + item.brand : ''}</div>
+      </div>
+    `;
+
+        div.addEventListener('click', () => batchEdit2(idx));
+        grid.appendChild(div);
+    });
+
+    batchUpdate();
+}
+
+function batchEdit2(idx) {
+    editingBatchIdx = editingBatchIdx === idx ? -1 : idx;
+
+    document.querySelectorAll('[id^="bi-"]').forEach((el, i) => {
+        if (i === idx) {
+            el.style.borderColor = editingBatchIdx !== -1 ? 'var(--primary)' : 'var(--border)';
+            el.style.boxShadow = editingBatchIdx !== -1 ? '0 0 0 2px rgba(255,107,157,0.2)' : 'none';
+        } else {
+            el.style.borderColor = 'var(--border)';
+            el.style.boxShadow = 'none';
+        }
+    });
+
+    if (editingBatchIdx !== -1) {
+        renderBatchEditPanel(idx);
+    } else {
+        document.getElementById('batch-edit-panel').style.display = 'none';
+    }
+}
+
+function renderBatchEditPanel(idx) {
+    const item = batchItems[idx];
+    const panel = document.getElementById('batch-edit-panel');
+
+    panel.innerHTML = `
+    <div style="background:linear-gradient(135deg,var(--surface2),var(--surface3));border:2px solid var(--border);border-radius:14px;padding:1.2rem">
+      <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem">
+        <img src="${item.image}" style="width:44px;height:56px;object-fit:cover;border-radius:8px;border:2px solid var(--border)">
+        <div style="font-size:0.8rem;color:var(--primary);font-weight:700">編輯：${item.name}</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+        <div class="form-group">
+          <label class="form-label">名稱</label>
+          <input class="form-input" value="${item.name}" onchange="batchItems[${idx}].name=this.value;document.getElementById('bi-${idx}').querySelector('div:last-child div:first-child').textContent=this.value">
+        </div>
+        <div class="form-group">
+          <label class="form-label">品牌</label>
+          <input class="form-input" value="${item.brand || ''}" onchange="batchItems[${idx}].brand=this.value;batchUpdate()">
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+        <div class="form-group">
+          <label class="form-label">類別</label>
+          <select class="form-select" onchange="batchItems[${idx}].category=this.value;document.getElementById('bi-${idx}').querySelector('div:last-child div:last-child').textContent=this.value+(batchItems[${idx}].brand?'·'+batchItems[${idx}].brand:'');batchUpdate()">
+            <option value="">選擇</option>
+            <option ${item.category === '上衣' ? 'selected' : ''}>上衣</option>
+            <option ${item.category === '褲子' ? 'selected' : ''}>褲子</option>
+            <option ${item.category === '裙子' ? 'selected' : ''}>裙子</option>
+            <option ${item.category === '外套' ? 'selected' : ''}>外套</option>
+            <option ${item.category === '洋裝' ? 'selected' : ''}>洋裝</option>
+            <option ${item.category === '鞋子' ? 'selected' : ''}>鞋子</option>
+            <option ${item.category === '包包' ? 'selected' : ''}>包包</option>
+            <option ${item.category === '配件' ? 'selected' : ''}>配件</option>
+            <option ${item.category === '內搭' ? 'selected' : ''}>內搭</option>
+            <option ${item.category === '運動' ? 'selected' : ''}>運動</option>
+            <option ${item.category === '其他' ? 'selected' : ''}>其他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">季節</label>
+          <select class="form-select" onchange="batchItems[${idx}].season=this.value">
+            <option value="">選擇</option>
+            <option ${item.season === '四季' ? 'selected' : ''}>四季</option>
+            <option ${item.season === '春夏' ? 'selected' : ''}>春夏</option>
+            <option ${item.season === '秋冬' ? 'selected' : ''}>秋冬</option>
+            <option ${item.season === '夏' ? 'selected' : ''}>夏</option>
+            <option ${item.season === '冬' ? 'selected' : ''}>冬</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">顏色</label>
+        <input class="form-input" value="${item.color || ''}" placeholder="例：黑色、白色" onchange="batchItems[${idx}].color=this.value">
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+        <div class="form-group">
+          <label class="form-label">風格</label>
+          <input class="form-input" value="${item.style || ''}" placeholder="例：休閒、正式" onchange="batchItems[${idx}].style=this.value">
+        </div>
+        <div class="form-group">
+          <label class="form-label">價格</label>
+          <input class="form-input" type="number" value="${item.price || ''}" placeholder="NT$" onchange="batchItems[${idx}].price=this.value">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">備註</label>
+        <textarea class="form-textarea" onchange="batchItems[${idx}].note=this.value" placeholder="材質、保養方式..." style="resize:vertical;min-height:60px">${item.note || ''}</textarea>
+      </div>
+    </div>
+  `;
+
+    panel.style.display = 'block';
+}
+
+function batchDel(idx) {
+    if (confirm('確定要刪除嗎？')) {
+        batchItems.splice(idx, 1);
+        if (editingBatchIdx === idx) editingBatchIdx = -1;
+        else if (editingBatchIdx > idx) editingBatchIdx--;
+        batchRender();
+    }
+}
+
+function batchApply() {
+    const cat = document.getElementById('b-category').value;
+    const brand = document.getElementById('b-brand').value;
+    const season = document.getElementById('b-season').value;
+
+    if (!cat && !brand && !season) {
+        alert('請選擇至少一個屬性');
+        return;
+    }
+
+    batchItems.forEach(item => {
+        if (cat) item.category = cat;
+        if (brand) item.brand = brand;
+        if (season) item.season = season;
+    });
+
+    batchRender();
+    toast('✨ 已套用所有設定');
+}
+
+function batchUpdate() {
+    const total = batchItems.length;
+    const filled = batchItems.filter(i => i.category && i.name).length;
+    const percent = total > 0 ? (filled / total * 100) : 0;
+
+    document.getElementById('batch-bar').style.width = percent + '%';
+    document.getElementById('batch-counter').textContent = `已填 ${filled} / ${total}`;
+    document.getElementById('batch-save').disabled = filled < total;
+    document.getElementById('batch-save').style.opacity = filled < total ? '0.5' : '1';
+}
+
+async function batchSave() {
+    const incomplete = batchItems.filter(i => !i.category || !i.name);
+    if (incomplete.length > 0) {
+        alert(`還有 ${incomplete.length} 項未完成`);
+        return;
+    }
+
+    document.getElementById('batch-save').disabled = true;
+    document.getElementById('batch-save').textContent = '儲存中...';
+    document.getElementById('batch-error').style.display = 'none';
+
+    try {
+        const clothesList = batchItems.map(item => ({
+            name: item.name,
+            brand: item.brand,
+            category: item.category,
+            season: item.season || '四季',
+            color: item.color,
+            style: item.style,
+            price: item.price,
+            note: item.note,
+            image: item.image
+        }));
+
+        const response = await apiCall('/clothes/batch-import', 'POST', clothesList);
+        toast(`✅ 已新增 ${response.count} 件衣物`);
+
+        batchItems = [];
+        editingBatchIdx = -1;
+        closeBatch();
+        await loadClothes();
+    } catch (e) {
+        document.getElementById('batch-error').textContent = '❌ ' + e.message;
+        document.getElementById('batch-error').style.display = 'block';
+    } finally {
+        document.getElementById('batch-save').disabled = false;
+        document.getElementById('batch-save').textContent = '✅ 儲存全部';
+    }
+}
+
 
 // ===== 備份 =====
 function openBackup() { openModal('modal-backup'); }
