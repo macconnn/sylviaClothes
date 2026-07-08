@@ -682,7 +682,7 @@ function importLocal(e) {
 // ===== 初始化 =====
 window.addEventListener('load', async () => {
   await checkConnection();
-  setInterval(checkConnection, 30000); // 每 30 秒檢查一次連接
+  setInterval(checkConnection, 300000); // 每 30 秒檢查一次連接
   await loadClothes();
 });
 </script>
