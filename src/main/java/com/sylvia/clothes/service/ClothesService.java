@@ -1,5 +1,6 @@
 package com.sylvia.clothes.service;
 
+import ch.qos.logback.core.util.StringUtil;
 import com.sylvia.clothes.dto.BackupDTO;
 import com.sylvia.clothes.dto.ClothesDTO;
 import com.sylvia.clothes.dto.StatisticsDTO;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -35,17 +37,35 @@ public class ClothesService {
   public ClothesDTO addClothes(ClothesDTO dto) {
     log.info("新增衣物: {}", dto.getName());
 
-    Clothes clothes = Clothes.builder()
-        .name(dto.getName())
-        .brand(dto.getBrand())
-        .category(dto.getCategory())
-        .season(dto.getSeason())
-        .color(dto.getColor())
-        .style(dto.getStyle())
-        .price(dto.getPrice())
-        .image(dto.getImage())
-        .note(dto.getNote())
-        .build();
+    Clothes clothes = new Clothes();
+
+    if (StringUtil.notNullNorEmpty(dto.getId())) {
+      clothes = Clothes.builder()
+          .id(dto.getId())
+          .name(dto.getName())
+          .brand(dto.getBrand())
+          .category(dto.getCategory())
+          .season(dto.getSeason())
+          .color(dto.getColor())
+          .style(dto.getStyle())
+          .price(dto.getPrice())
+          .image(dto.getImage())
+          .note(dto.getNote())
+          .build();
+    } else {
+      clothes = Clothes.builder()
+          .id(UUID.randomUUID().toString())
+          .name(dto.getName())
+          .brand(dto.getBrand())
+          .category(dto.getCategory())
+          .season(dto.getSeason())
+          .color(dto.getColor())
+          .style(dto.getStyle())
+          .price(dto.getPrice())
+          .image(dto.getImage())
+          .note(dto.getNote())
+          .build();
+    }
 
     Clothes saved = clothesRepository.save(clothes);
     return convertToDTO(saved);

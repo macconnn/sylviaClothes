@@ -1,11 +1,14 @@
 package com.sylvia.clothes.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -14,53 +17,46 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <pre>
- * Clothes
+ * Trip (旅行) - 第一層：旅行本身，包含目的地、出發/回程日期、行程描述
  * </pre>
  *
  * @author Eden
  */
 @Entity
-@Table(name = "clothes")
+@Table(name = "trip")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Clothes {
+public class Trip {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
   @Column(nullable = false)
-  private String name;
-
-  @Column(length = 100)
-  private String brand;
+  private String destination; // 目的地
 
   @Column(nullable = false)
-  private String category; // 上衣, 褲子, 裙子, 外套, 洋裝, 鞋子, 包包, 配件, 內搭, 運動, 其他
+  private LocalDate startDate; // 出發日期
 
-  @Column(length = 50)
-  private String season; // 四季, 春夏, 秋冬, 夏, 冬
-
-  @Column(length = 50)
-  private String color;
-
-  @Column(length = 100)
-  private String style; // 休閒, 正式, 韓系等
-
-  @Column(length = 20)
-  private String price; // NT$
-
-  @Lob
-  @Column(columnDefinition = "TEXT")
-  private String image; // Base64 encoded image
+  @Column(nullable = false)
+  private LocalDate endDate; // 回程日期
 
   @Column(columnDefinition = "TEXT")
-  private String note;
+  private String description; // 行程描述
+
+  @Builder.Default
+  @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @OrderBy("dayIndex ASC")
+  private List<TripDay> days = new ArrayList<>();
 
   @Column(nullable = false, updatable = false)
   private LocalDateTime createdAt;

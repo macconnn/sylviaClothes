@@ -77,61 +77,6 @@ body{background:linear-gradient(135deg,#faf6ef,#f3ead8);color:var(--text);font-f
 .color-swatch{width:24px;height:24px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all 0.2s}
 .color-swatch.selected{border-color:var(--primary);transform:scale(1.15)}
 .error{color:#d2b48c;font-size:0.75rem;margin-top:4px}
-
-/* ===== Tabs ===== */
-.tabs{display:flex;gap:0.5rem;margin-bottom:1.2rem;border-bottom:2px solid var(--border)}
-.tab-btn{padding:10px 18px;border:none;background:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:700;font-size:0.9rem;color:#999;border-bottom:3px solid transparent;transition:all 0.2s;margin-bottom:-2px}
-.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
-.tab-btn:hover{color:var(--primary)}
-
-/* ===== Trip list ===== */
-.trip-card{background:white;border:2px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all 0.3s;box-shadow:0 2px 10px rgba(0,0,0,0.05);padding:1.1rem}
-.trip-card:hover{border-color:var(--primary);transform:translateY(-4px);box-shadow:0 8px 25px rgba(166,139,91,0.25)}
-.trip-dest{font-size:1.05rem;font-weight:700;color:var(--primary);margin-bottom:4px;display:flex;align-items:center;gap:6px}
-.trip-dates{font-size:0.8rem;color:#888;margin-bottom:10px}
-.trip-meta-row{display:flex;gap:0.6rem;flex-wrap:wrap}
-.trip-meta-pill{background:#faf6ef;border:2px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.72rem;color:var(--text);font-weight:600}
-.trip-card-actions{display:flex;justify-content:flex-end;margin-top:10px;gap:0.4rem}
-.icon-btn{width:30px;height:30px;border:2px solid var(--border);background:#faf6ef;border-radius:8px;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-.icon-btn:hover{border-color:var(--primary)}
-
-/* ===== Trip detail ===== */
-.trip-detail-header{background:white;border:2px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:1.2rem;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
-.trip-detail-title{font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:6px}
-.trip-detail-sub{font-size:0.82rem;color:#888;margin-bottom:0.8rem}
-.trip-detail-desc{font-size:0.85rem;color:var(--text);line-height:1.5;background:#faf6ef;border-radius:8px;padding:0.7rem;border:2px solid var(--border)}
-.back-btn{background:none;border:none;color:var(--primary);font-weight:700;font-size:0.85rem;cursor:pointer;margin-bottom:1rem;display:inline-flex;align-items:center;gap:4px}
-.back-btn:hover{text-decoration:underline}
-
-.day-card{background:white;border:2px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:1rem;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
-.day-head{display:flex;justify-content:space-between;align-items:flex-start;gap:0.8rem;margin-bottom:0.7rem;flex-wrap:wrap}
-.day-date{font-weight:700;color:var(--text);font-size:0.95rem}
-.day-index{font-size:0.7rem;color:var(--primary);font-weight:700;letter-spacing:0.08em}
-.day-note{flex:1;min-width:180px}
-.day-note-input{width:100%;padding:8px 10px;background:#faf6ef;border:2px solid var(--border);border-radius:8px;font-family:'Noto Sans TC',sans-serif;font-size:0.78rem;color:var(--text);outline:none}
-.day-note-input:focus{border-color:var(--primary)}
-.day-clothes-row{display:flex;flex-wrap:wrap;gap:0.7rem;align-items:flex-start}
-.clothes-chip{width:88px;background:white;border:2px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.2s;position:relative;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
-.clothes-chip:hover{border-color:var(--primary);transform:translateY(-3px);box-shadow:0 6px 16px rgba(166,139,91,0.25)}
-.chip-thumb{width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,#faf6ef,#efe2cc);display:flex;align-items:center;justify-content:center;font-size:1.8rem;overflow:hidden}
-.chip-thumb img{width:100%;height:100%;object-fit:cover}
-.chip-name{font-size:0.68rem;font-weight:600;padding:5px 6px 6px;line-height:1.25;color:var(--text);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chip-remove{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;border:none;background:rgba(255,255,255,0.9);color:#c98a8a;cursor:pointer;font-size:0.75rem;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.15)}
-.chip-remove:hover{color:#e84a7c;background:white}
-.add-day-clothes-btn{width:88px;aspect-ratio:1/1;border:2px dashed var(--border);background:#faf6ef;border-radius:12px;cursor:pointer;font-size:1.4rem;color:var(--primary);display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-.add-day-clothes-btn:hover{border-color:var(--primary);background:rgba(166,139,91,0.08)}
-
-/* ===== Pick clothes modal ===== */
-.pick-cat-title{font-size:0.75rem;font-weight:700;color:var(--primary);letter-spacing:0.08em;margin:0.9rem 0 0.5rem;text-transform:uppercase}
-.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:0.6rem}
-.pick-item{border:2px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:all 0.2s;position:relative;background:#faf6ef}
-.pick-item.selected{border-color:var(--primary);box-shadow:0 0 0 3px rgba(166,139,91,0.2)}
-.pick-item-img{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:1.4rem;overflow:hidden}
-.pick-item-img img{width:100%;height:100%;object-fit:cover}
-.pick-item-name{font-size:0.65rem;padding:4px;text-align:center;line-height:1.2;color:var(--text)}
-.pick-item-check{position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:50%;background:var(--primary);color:white;display:none;align-items:center;justify-content:center;font-size:0.65rem}
-.pick-item.selected .pick-item-check{display:flex}
-
 @media(max-width:600px){.grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}.form-row{grid-template-columns:1fr}}
 </style>
 </head>
@@ -149,68 +94,21 @@ body{background:linear-gradient(135deg,#faf6ef,#f3ead8);color:var(--text);font-f
 
 <div class="main">
   <div class="container">
+    <div class="header-title">我的衣物</div>
+    
+    <div class="stats" id="stats"></div>
 
-    <div class="tabs" id="tabs">
-      <button class="tab-btn active" data-tab="clothes" onclick="switchTab('clothes')">👗 衣物</button>
-      <button class="tab-btn" data-tab="trips" onclick="switchTab('trips')">✈️ 旅行</button>
+    <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1rem">
+      <button class="btn btn-primary" onclick="openBatch()">📦 批次匯入</button>
+      <button class="btn btn-primary" onclick="openAdd()">➕ 新增衣物</button>
     </div>
 
-    <!-- ===== 衣物頁籤 ===== -->
-    <div id="view-clothes">
-      <div class="header-title">我的衣物</div>
+    <input class="search" id="search" placeholder="🔍 搜尋衣物..." oninput="debounceSearch()">
 
-      <div class="stats" id="stats"></div>
+    <div class="filter" id="filters"></div>
 
-      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1rem">
-        <button class="btn btn-primary" onclick="openBatch()">📦 批次匯入</button>
-        <button class="btn btn-primary" onclick="openAdd()">➕ 新增衣物</button>
-      </div>
-
-      <input class="search" id="search" placeholder="🔍 搜尋衣物..." oninput="debounceSearch()">
-
-      <div class="filter" id="filters"></div>
-
-      <div id="loading" style="display:none" class="loading"><div class="spinner"></div><p>載入中...</p></div>
-      <div class="grid" id="grid"></div>
-    </div>
-
-    <!-- ===== 旅行頁籤 ===== -->
-    <div id="view-trips" style="display:none">
-
-      <!-- 第一層：旅行列表 -->
-      <div id="trip-list-level">
-        <div class="header-title">我的旅行</div>
-
-        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1rem">
-          <button class="btn btn-primary" onclick="openTripModal()">➕ 新增旅行</button>
-        </div>
-
-        <div id="trip-loading" style="display:none" class="loading"><div class="spinner"></div><p>載入中...</p></div>
-        <div class="grid" id="trip-grid"></div>
-      </div>
-
-      <!-- 第二層：單一旅行詳情（每日安排） -->
-      <div id="trip-detail-level" style="display:none">
-        <button class="back-btn" onclick="backToTripList()">← 返回旅行列表</button>
-
-        <div class="trip-detail-header">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.8rem;flex-wrap:wrap">
-            <div>
-              <div class="trip-detail-title" id="td-destination"></div>
-              <div class="trip-detail-sub" id="td-dates"></div>
-            </div>
-            <div style="display:flex;gap:0.4rem">
-              <button class="icon-btn" title="編輯" onclick="openTripModal(currentTrip)">✏️</button>
-              <button class="icon-btn" title="刪除" onclick="deleteTripFromDetail()">🗑</button>
-            </div>
-          </div>
-          <div class="trip-detail-desc" id="td-desc" style="display:none"></div>
-        </div>
-
-        <div id="day-list"></div>
-      </div>
-    </div>
-
+    <div id="loading" style="display:none" class="loading"><div class="spinner"></div><p>載入中...</p></div>
+    <div class="grid" id="grid"></div>
   </div>
 </div>
 
@@ -410,9 +308,7 @@ body{background:linear-gradient(135deg,#faf6ef,#f3ead8);color:var(--text);font-f
       </div>
       
       <div id="backup-error" style="display:none;background:#faf6ef;border:2px solid #a68b5b;border-radius:8px;padding:0.8rem;color:#8b6f47;font-size:0.85rem;margin-bottom:1rem"></div>
-
-      <div style="font-weight:700;color:var(--primary);font-size:0.85rem;letter-spacing:0.05em;margin-bottom:0.6rem">👗 衣物備份</div>
-
+      
       <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border);margin-bottom:1rem">
         <h3 style="font-weight:700;color:var(--primary);margin-bottom:0.4rem">📥 匯出本地備份</h3>
         <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem">下載 JSON 檔案到你的設備</p>
@@ -431,103 +327,15 @@ body{background:linear-gradient(135deg,#faf6ef,#f3ead8);color:var(--text);font-f
         <button class="btn btn-primary" style="width:100%" id="import-server-btn" onclick="importServer()">📤 從伺服器復原</button>
       </div>
 
-      <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border);margin-bottom:1.5rem">
+      <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border)">
         <h3 style="font-weight:700;color:var(--primary);margin-bottom:0.4rem">📤 從設備上傳備份</h3>
         <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem">上傳之前下載的 JSON 檔案</p>
         <input type="file" id="import-file" accept=".json" style="display:none" onchange="importLocal(event)">
         <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('import-file').click()">📤 從設備上傳</button>
       </div>
-
-      <div style="border-top:2px dashed var(--border);margin:1.2rem 0"></div>
-
-      <div style="font-weight:700;color:var(--primary);font-size:0.85rem;letter-spacing:0.05em;margin-bottom:0.6rem">✈️ 旅行備份</div>
-
-      <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border);margin-bottom:1rem">
-        <h3 style="font-weight:700;color:var(--primary);margin-bottom:0.4rem">📥 匯出本地備份</h3>
-        <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem">下載旅行 JSON 檔案到你的設備（含每日安排與已選衣物）</p>
-        <button class="btn btn-primary" style="width:100%;margin-bottom:0.5rem" onclick="exportTripLocal()">📥 下載到設備</button>
-      </div>
-
-      <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border);margin-bottom:1rem">
-        <h3 style="font-weight:700;color:var(--primary);margin-bottom:0.4rem">💾 備份到伺服器</h3>
-        <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem">將旅行資料存儲到 Spring Boot 伺服器</p>
-        <button class="btn btn-primary" style="width:100%;margin-bottom:0.5rem" id="trip-export-btn" onclick="exportTripServer()">💾 備份到伺服器</button>
-      </div>
-
-      <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border);margin-bottom:1rem">
-        <h3 style="font-weight:700;color:var(--primary);margin-bottom:0.4rem">📤 從伺服器復原</h3>
-        <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem">從伺服器恢復旅行備份資料</p>
-        <button class="btn btn-primary" style="width:100%" id="trip-import-server-btn" onclick="importTripServer()">📤 從伺服器復原</button>
-      </div>
-
-      <div style="background:#faf6ef;border-radius:10px;padding:1rem;border:2px solid var(--border)">
-        <h3 style="font-weight:700;color:var(--primary);margin-bottom:0.4rem">📤 從設備上傳備份</h3>
-        <p style="font-size:0.8rem;color:#888;margin-bottom:0.8rem">上傳之前下載的旅行 JSON 檔案</p>
-        <input type="file" id="trip-import-file" accept=".json" style="display:none" onchange="importTripLocal(event)">
-        <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('trip-import-file').click()">📤 從設備上傳</button>
-      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('modal-backup')">關閉</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: 新增/編輯旅行 -->
-<div class="modal" id="modal-trip">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div class="modal-title" id="trip-modal-title">新增旅行</div>
-      <button class="modal-close" onclick="closeModal('modal-trip')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="trip-error" style="display:none;background:#f5ead8;border:2px solid #e84a7c;border-radius:8px;padding:0.8rem;color:#e84a7c;font-size:0.85rem;margin-bottom:1rem"></div>
-
-      <div class="form-group">
-        <label class="form-label">目的地</label>
-        <input class="form-input" id="trip-destination" placeholder="例：東京、巴黎、清邁">
-        <div id="trip-destination-error" class="error"></div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">出發日期</label>
-          <input class="form-input" type="date" id="trip-start">
-          <div id="trip-start-error" class="error"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">回程日期</label>
-          <input class="form-input" type="date" id="trip-end">
-          <div id="trip-end-error" class="error"></div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">行程描述</label>
-        <textarea class="form-textarea" id="trip-desc" placeholder="旅行目的、活動計畫..." style="resize:vertical;min-height:100px"></textarea>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modal-trip')">取消</button>
-      <button class="btn btn-primary" id="trip-save-btn" onclick="saveTrip()">建立旅行</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: 選擇衣物加入某一天 -->
-<div class="modal" id="modal-pick-clothes">
-  <div class="modal-box" style="max-width:640px">
-    <div class="modal-header">
-      <div class="modal-title">👕 選擇衣物</div>
-      <button class="modal-close" onclick="closeModal('modal-pick-clothes')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input class="search" id="pick-search" placeholder="🔍 搜尋衣物..." oninput="renderPickGrid()">
-      <div id="pick-body"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modal-pick-clothes')">取消</button>
-      <button class="btn btn-primary" id="pick-confirm-btn" onclick="confirmPickClothes()">✅ 加入這一天</button>
     </div>
   </div>
 </div>
@@ -1133,7 +941,6 @@ async function batchSave() {
 
     try {
         const clothesList = batchItems.map(item => ({
-            id: crypto.randomUUID(),
             name: item.name,
             brand: item.brand,
             category: item.category,
@@ -1157,7 +964,7 @@ async function batchSave() {
         document.getElementById('batch-error').style.display = 'block';
     } finally {
         document.getElementById('batch-save').disabled = false;
-        document.getElementById('batch-save').textContent = '✅  儲存全部';
+        document.getElementById('batch-save').textContent = '✅ 儲存全部';
     }
 }
 
@@ -1235,406 +1042,6 @@ function importLocal(e) {
   };
   r.readAsText(f);
   e.target.value = '';
-}
-
-// ===== 旅行備份 =====
-async function exportTripServer() {
-  document.getElementById('trip-export-btn').disabled = true;
-  document.getElementById('trip-export-btn').textContent = '備份中...';
-  document.getElementById('backup-error').style.display = 'none';
-
-  try {
-    const backup = await apiCall('/trips/backup/export');
-    toast('✅ 備份成功');
-    document.getElementById('trip-export-btn').textContent = '💾 備份到伺服器';
-  } catch (e) {
-    document.getElementById('backup-error').textContent = '❌ ' + e.message;
-    document.getElementById('backup-error').style.display = 'block';
-  } finally {
-    document.getElementById('trip-export-btn').disabled = false;
-  }
-}
-
-async function importTripServer() {
-  document.getElementById('trip-import-server-btn').disabled = true;
-  document.getElementById('trip-import-server-btn').textContent = '復原中...';
-  document.getElementById('backup-error').style.display = 'none';
-
-  try {
-    const backup = await apiCall('/trips/backup/export');
-    await apiCall('/trips/backup/import', 'POST', backup);
-    toast('✅ 復原成功');
-    await loadTrips();
-    closeModal('modal-backup');
-  } catch (e) {
-    document.getElementById('backup-error').textContent = '❌ ' + e.message;
-    document.getElementById('backup-error').style.display = 'block';
-  } finally {
-    document.getElementById('trip-import-server-btn').disabled = false;
-    document.getElementById('trip-import-server-btn').textContent = '📤 從伺服器復原';
-  }
-}
-
-async function exportTripLocal() {
-  try {
-    const backup = await apiCall('/trips/backup/export');
-    const s = JSON.stringify(backup, null, 2);
-    const b = new Blob([s], { type: 'application/json' });
-    const u = URL.createObjectURL(b);
-    const a = document.createElement('a');
-    a.href = u;
-    a.download = `trips-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(u);
-    toast('💾 已下載到設備');
-  } catch (e) {
-    document.getElementById('backup-error').textContent = '❌ ' + e.message;
-    document.getElementById('backup-error').style.display = 'block';
-  }
-}
-
-function importTripLocal(e) {
-  const f = e.target.files[0];
-  if (!f) return;
-  const r = new FileReader();
-  r.onload = async ev => {
-    try {
-      const data = JSON.parse(ev.target.result);
-      if (!data.trips) throw new Error('格式錯誤');
-
-      await apiCall('/trips/backup/import', 'POST', data);
-      toast('✅ 已導入');
-      await loadTrips();
-      closeModal('modal-backup');
-    } catch (err) {
-      document.getElementById('backup-error').textContent = '❌ ' + err.message;
-      document.getElementById('backup-error').style.display = 'block';
-    }
-  };
-  r.readAsText(f);
-  e.target.value = '';
-}
-
-// ================================================================
-// ===== 旅行 (Trips) =====
-// ================================================================
-let trips = [];
-let currentTrip = null;      // 目前開啟的旅行詳情（第二層）
-let editingTripId = null;    // 目前正在編輯的旅行 id（null = 新增）
-let pickingDayId = null;     // 目前正在挑選衣物的日期 id
-let pickSelected = new Set();// 挑選衣物 modal 中已勾選的衣物 id
-
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-  document.getElementById('view-clothes').style.display = tab === 'clothes' ? 'block' : 'none';
-  document.getElementById('view-trips').style.display = tab === 'trips' ? 'block' : 'none';
-
-  if (tab === 'trips') {
-    document.getElementById('trip-list-level').style.display = 'block';
-    document.getElementById('trip-detail-level').style.display = 'none';
-    loadTrips();
-  }
-}
-
-function fmtDate(iso) {
-  if (!iso) return '';
-  const [y, m, d] = iso.split('-');
-  return `${y}/${m}/${d}`;
-}
-
-// ----- 第一層：旅行列表 -----
-async function loadTrips() {
-  document.getElementById('trip-loading').style.display = 'block';
-  try {
-    trips = await apiCall('/trips');
-    renderTripList();
-  } catch (e) {
-    toast('❌ 載入旅行失敗: ' + e.message);
-  } finally {
-    document.getElementById('trip-loading').style.display = 'none';
-  }
-}
-
-function renderTripList() {
-  const grid = document.getElementById('trip-grid');
-  if (!trips.length) {
-    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">
-      <div class="empty-icon">✈️</div>
-      <p>還沒有旅行，開始規劃第一趟旅程吧！</p>
-    </div>`;
-    return;
-  }
-
-  grid.innerHTML = trips.map(t => `
-    <div class="trip-card" onclick="openTripDetail('${t.id}')">
-      <div class="trip-dest">🧳 ${t.destination}</div>
-      <div class="trip-dates">${fmtDate(t.startDate)} → ${fmtDate(t.endDate)}</div>
-      <div class="trip-meta-row">
-        <span class="trip-meta-pill">${t.totalDays} 天</span>
-        <span class="trip-meta-pill">${t.itemCount} 件衣物已安排</span>
-      </div>
-      <div class="trip-card-actions">
-        <button class="icon-btn" title="刪除" onclick="event.stopPropagation();deleteTrip('${t.id}')">🗑</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ----- 新增 / 編輯旅行 -----
-function openTripModal(trip) {
-  editingTripId = trip ? trip.id : null;
-  document.getElementById('trip-modal-title').textContent = trip ? '編輯旅行' : '新增旅行';
-  document.getElementById('trip-save-btn').textContent = trip ? '儲存變更' : '建立旅行';
-  document.getElementById('trip-error').style.display = 'none';
-  document.querySelectorAll('#modal-trip .error').forEach(e => e.style.display = 'none');
-
-  document.getElementById('trip-destination').value = trip ? trip.destination : '';
-  document.getElementById('trip-start').value = trip ? trip.startDate : '';
-  document.getElementById('trip-end').value = trip ? trip.endDate : '';
-  document.getElementById('trip-desc').value = trip ? (trip.description || '') : '';
-
-  openModal('modal-trip');
-}
-
-async function saveTrip() {
-  const destination = document.getElementById('trip-destination').value.trim();
-  const startDate = document.getElementById('trip-start').value;
-  const endDate = document.getElementById('trip-end').value;
-  const description = document.getElementById('trip-desc').value.trim();
-
-  let errors = {};
-  if (!destination) errors['trip-destination'] = '目的地不能為空';
-  if (!startDate) errors['trip-start'] = '出發日期不能為空';
-  if (!endDate) errors['trip-end'] = '回程日期不能為空';
-  if (startDate && endDate && endDate < startDate) errors['trip-end'] = '回程日期不能早於出發日期';
-
-  if (Object.keys(errors).length > 0) {
-    Object.entries(errors).forEach(([k, v]) => {
-      const el = document.getElementById(k + '-error');
-      if (el) { el.textContent = v; el.style.display = 'block'; }
-    });
-    return;
-  }
-  document.querySelectorAll('#modal-trip .error').forEach(e => e.style.display = 'none');
-
-  const payload = { destination, startDate, endDate, description };
-
-  document.getElementById('trip-save-btn').disabled = true;
-  document.getElementById('trip-save-btn').textContent = '儲存中...';
-
-  try {
-    if (editingTripId) {
-      const updated = await apiCall(`/trips/${editingTripId}`, 'PUT', payload);
-      toast('✏️ 旅行已更新');
-      closeModal('modal-trip');
-      await loadTrips();
-      if (currentTrip && currentTrip.id === editingTripId) {
-        currentTrip = updated;
-        renderTripDetail();
-      }
-    } else {
-      const created = await apiCall('/trips', 'POST', payload);
-      toast('✅ 旅行已建立');
-      closeModal('modal-trip');
-      await loadTrips();
-      openTripDetail(created.id);
-    }
-  } catch (e) {
-    document.getElementById('trip-error').textContent = '❌ ' + e.message;
-    document.getElementById('trip-error').style.display = 'block';
-  } finally {
-    document.getElementById('trip-save-btn').disabled = false;
-    document.getElementById('trip-save-btn').textContent = editingTripId ? '儲存變更' : '建立旅行';
-  }
-}
-
-async function deleteTrip(id) {
-  if (!confirm('確定要刪除這趟旅行嗎？所有每日安排也會一併刪除。')) return;
-  try {
-    await apiCall(`/trips/${id}`, 'DELETE');
-    toast('🗑 旅行已刪除');
-    await loadTrips();
-  } catch (e) {
-    toast('❌ 刪除失敗: ' + e.message);
-  }
-}
-
-function deleteTripFromDetail() {
-  if (!currentTrip) return;
-  const id = currentTrip.id;
-  if (!confirm('確定要刪除這趟旅行嗎？所有每日安排也會一併刪除。')) return;
-  apiCall(`/trips/${id}`, 'DELETE')
-    .then(() => { toast('🗑 旅行已刪除'); backToTripList(); loadTrips(); })
-    .catch(e => toast('❌ 刪除失敗: ' + e.message));
-}
-
-// ----- 第二層：旅行詳情 / 每日安排 -----
-async function openTripDetail(id) {
-  try {
-    currentTrip = await apiCall(`/trips/${id}`);
-    document.getElementById('trip-list-level').style.display = 'none';
-    document.getElementById('trip-detail-level').style.display = 'block';
-    renderTripDetail();
-  } catch (e) {
-    toast('❌ 載入旅行詳情失敗: ' + e.message);
-  }
-}
-
-function backToTripList() {
-  currentTrip = null;
-  document.getElementById('trip-detail-level').style.display = 'none';
-  document.getElementById('trip-list-level').style.display = 'block';
-}
-
-function renderTripDetail() {
-  const t = currentTrip;
-  document.getElementById('td-destination').textContent = `🧳 ${t.destination}`;
-  document.getElementById('td-dates').textContent = `${fmtDate(t.startDate)} → ${fmtDate(t.endDate)} · ${t.totalDays} 天`;
-
-  const descEl = document.getElementById('td-desc');
-  if (t.description) {
-    descEl.textContent = t.description;
-    descEl.style.display = 'block';
-  } else {
-    descEl.style.display = 'none';
-  }
-
-  const dayList = document.getElementById('day-list');
-  if (!t.days || !t.days.length) {
-    dayList.innerHTML = `<div class="empty"><div class="empty-icon">📅</div><p>沒有日期資料</p></div>`;
-    return;
-  }
-
-  dayList.innerHTML = t.days.map(d => `
-    <div class="day-card">
-      <div class="day-head">
-        <div>
-          <div class="day-index">DAY ${d.dayIndex}</div>
-          <div class="day-date">${fmtDate(d.date)}</div>
-        </div>
-        <div class="day-note">
-          <input class="day-note-input" placeholder="備註（天氣/活動...）" value="${(d.note || '').replace(/"/g, '&quot;')}"
-            onchange="saveDayNote('${d.id}', this.value)">
-        </div>
-      </div>
-      <div class="day-clothes-row">
-        ${d.clothes.map(c => `
-          <div class="clothes-chip" onclick="showDetail('${c.id}')" title="點擊查看衣物詳情">
-            <button class="chip-remove" title="移除" onclick="event.stopPropagation();removeDayClothes('${d.id}', '${c.id}')">✕</button>
-            <div class="chip-thumb">${c.image ? `<img src="${c.image}">` : catIcon(c.category)}</div>
-            <div class="chip-name">${c.name}</div>
-          </div>
-        `).join('')}
-        <button class="add-day-clothes-btn" title="新增衣物" onclick="openPickClothes('${d.id}')">➕</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-async function saveDayNote(dayId, note) {
-  if (!currentTrip) return;
-  try {
-    await apiCall(`/trips/${currentTrip.id}/days/${dayId}/note`, 'PATCH', { note });
-    const day = currentTrip.days.find(d => d.id === dayId);
-    if (day) day.note = note;
-    toast('📝 備註已儲存');
-  } catch (e) {
-    toast('❌ 儲存備註失敗: ' + e.message);
-  }
-}
-
-async function removeDayClothes(dayId, clothesId) {
-  if (!currentTrip) return;
-  try {
-    const updatedDay = await apiCall(`/trips/${currentTrip.id}/days/${dayId}/clothes/${clothesId}`, 'DELETE');
-    const idx = currentTrip.days.findIndex(d => d.id === dayId);
-    if (idx > -1) currentTrip.days[idx] = updatedDay;
-    renderTripDetail();
-  } catch (e) {
-    toast('❌ 移除失敗: ' + e.message);
-  }
-}
-
-// ----- 挑選衣物加入某一天（依類別分組，可複選） -----
-async function openPickClothes(dayId) {
-  pickingDayId = dayId;
-  pickSelected = new Set();
-  document.getElementById('pick-search').value = '';
-
-  if (!clothes.length) {
-    try { clothes = await apiCall('/clothes'); } catch (e) { /* ignore, will show empty */ }
-  }
-
-  renderPickGrid();
-  openModal('modal-pick-clothes');
-}
-
-function renderPickGrid() {
-  const search = (document.getElementById('pick-search').value || '').toLowerCase();
-  const day = currentTrip ? currentTrip.days.find(d => d.id === pickingDayId) : null;
-  const alreadyIds = new Set((day ? day.clothes : []).map(c => c.id));
-
-  const filtered = clothes.filter(c =>
-    !alreadyIds.has(c.id) &&
-    (!search || c.name.toLowerCase().includes(search) || (c.brand || '').toLowerCase().includes(search))
-  );
-
-  const body = document.getElementById('pick-body');
-
-  if (!filtered.length) {
-    body.innerHTML = `<div class="empty"><div class="empty-icon">👕</div><p>沒有可選擇的衣物</p></div>`;
-    return;
-  }
-
-  const groups = {};
-  filtered.forEach(c => {
-    const cat = c.category || '其他';
-    if (!groups[cat]) groups[cat] = [];
-    groups[cat].push(c);
-  });
-
-  body.innerHTML = Object.entries(groups).map(([cat, items]) => `
-    <div class="pick-cat-title">${catIcon(cat)} ${cat}</div>
-    <div class="pick-grid">
-      ${items.map(c => `
-        <div class="pick-item ${pickSelected.has(c.id) ? 'selected' : ''}" onclick="togglePick('${c.id}')" id="pick-item-${c.id}">
-          <div class="pick-item-check">✓</div>
-          <div class="pick-item-img">${c.image ? `<img src="${c.image}">` : catIcon(c.category)}</div>
-          <div class="pick-item-name">${c.name}</div>
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
-}
-
-function togglePick(id) {
-  if (pickSelected.has(id)) pickSelected.delete(id);
-  else pickSelected.add(id);
-  const el = document.getElementById(`pick-item-${id}`);
-  if (el) el.classList.toggle('selected');
-}
-
-async function confirmPickClothes() {
-  if (!currentTrip || !pickingDayId) return;
-  if (!pickSelected.size) { closeModal('modal-pick-clothes'); return; }
-
-  document.getElementById('pick-confirm-btn').disabled = true;
-  try {
-    const updatedDay = await apiCall(
-      `/trips/${currentTrip.id}/days/${pickingDayId}/clothes`,
-      'POST',
-      { clothesIds: Array.from(pickSelected) }
-    );
-    const idx = currentTrip.days.findIndex(d => d.id === pickingDayId);
-    if (idx > -1) currentTrip.days[idx] = updatedDay;
-    renderTripDetail();
-    closeModal('modal-pick-clothes');
-    toast(`✅ 已加入 ${pickSelected.size} 件衣物`);
-  } catch (e) {
-    toast('❌ 加入失敗: ' + e.message);
-  } finally {
-    document.getElementById('pick-confirm-btn').disabled = false;
-  }
 }
 
 // ===== 初始化 =====
