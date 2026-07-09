@@ -55,7 +55,6 @@ public class Clothes {
   @Column(length = 20)
   private String price; // NT$
 
-  @Lob
   @Column(columnDefinition = "TEXT")
   private String image; // Base64 encoded image
 
